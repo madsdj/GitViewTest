@@ -119,6 +119,7 @@ namespace GitViewTest
             Vector halfSize = nodeSize * 0.5;
 
             var graphBuilder = new GraphBuilder();
+            var pens = _brushes.Select(b => new Pen(b, 2)).ToArray();
 
             foreach (UIElement child in Children)
             {
@@ -133,20 +134,17 @@ namespace GitViewTest
 
                     Point b = new Point(childNode.X * nodeSize.X, childNode.Y * nodeSize.Y) + halfSize;
 
-                    Pen pen = new Pen(_brushes[childNode.X], 2);
-
                     if (a.X == b.X)
                     {
-                        dc.DrawLine(pen, a, b);
+                        dc.DrawLine(pens[childNode.X], a, b);
                     }
                     else if (childNode.IsMerge && !reference.IsFirst)
                     {
-                        pen = new Pen(_brushes[node.X], 2);
-                        DrawReference(dc, pen, b, a);
+                        DrawReference(dc, pens[node.X], b, a);
                     }
                     else
                     {
-                        DrawReference(dc, pen, a, b);
+                        DrawReference(dc, pens[childNode.X], a, b);
                     }
                 }
             }
