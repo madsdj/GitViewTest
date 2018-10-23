@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:GitViewTest"
         xmlns:converters="clr-namespace:GitViewTest.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Background="#1C1E23" TextElement.Foreground="#CCC">
+        Title="MainWindow" Height="450" Width="800" Background="#1C1E23" TextElement.Foreground="#BBB">
     <Window.Resources>
         <converters:AuthorToBrushConverter x:Key="AuthorToBrush" />
         <converters:AuthorToLetterConverter x:Key="AuthorToLetter" />

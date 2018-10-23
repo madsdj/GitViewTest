@@ -68,6 +68,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CommitGraphPanel.cs" />
+    <Compile Include="CommitLogItem.cs" />
     <Compile Include="CommitLogView.cs" />
     <Compile Include="Converters\AuthorToBrushConverter.cs" />
     <Compile Include="Converters\AuthorToLetterConverter.cs" />
