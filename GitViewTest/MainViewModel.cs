@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using LibGit2Sharp;
 
 namespace GitViewTest
@@ -12,7 +9,13 @@ namespace GitViewTest
         {
             using (var repo = new Repository(@"<Your Git repository>"))
             {
-                var nodes = repo.Commits.QueryBy(new CommitFilter { SortBy = CommitSortStrategies.Time|CommitSortStrategies.Topological }).ToArray();
+                var filter = new CommitFilter
+                {
+                    SortBy = CommitSortStrategies.Time | CommitSortStrategies.Topological,
+                    IncludeReachableFrom = repo.Branches
+                };
+
+                var nodes = repo.Commits.QueryBy(filter).ToArray();
 
                 Commits = nodes.Select(n => new CommitViewModel
                 {
