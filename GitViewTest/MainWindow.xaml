@@ -1,0 +1,65 @@
+﻿<Window x:Class="GitViewTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:GitViewTest"
+        xmlns:converters="clr-namespace:GitViewTest.Converters"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Background="#1C1E23" TextElement.Foreground="#CCC">
+    <Window.Resources>
+        <converters:AuthorToBrushConverter x:Key="AuthorToBrush" />
+        <converters:AuthorToLetterConverter x:Key="AuthorToLetter" />
+    </Window.Resources>
+    <!-- CommitGraph Only -->
+    <!--<ScrollViewer>
+        <ItemsControl ItemsSource="{Binding Commits}">
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type ContentPresenter}">
+                    <Setter Property="local:CommitGraphPanel.Id" Value="{Binding Id}" />
+                    <Setter Property="local:CommitGraphPanel.ParentIds" Value="{Binding ParentIds}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <local:CommitGraphPanel NodeSize="28,28" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Width="22" Height="22" Background="{Binding (local:CommitGraphPanel.NodeBrush), RelativeSource={RelativeSource Self}}" CornerRadius="11">
+                        <Border Width="18" Height="18" Margin="2" Background="{Binding Author, Converter={StaticResource AuthorToBrush}}" ToolTip="{Binding Author}" CornerRadius="9">
+                            <TextBlock Text="{Binding Author, Converter={StaticResource AuthorToLetter}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold" />
+                        </Border>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>-->
+
+    <local:CommitLogView ItemsSource="{Binding Commits}">
+        <local:CommitLogView.NodeContainerStyle>
+            <Style TargetType="{x:Type ContentPresenter}">
+                <Setter Property="local:CommitGraphPanel.Id" Value="{Binding Id}" />
+                <Setter Property="local:CommitGraphPanel.ParentIds" Value="{Binding ParentIds}" />
+            </Style>
+        </local:CommitLogView.NodeContainerStyle>
+        <local:CommitLogView.NodeTemplate>
+            <DataTemplate>
+                <Border Width="22" Height="22" Background="{Binding (local:CommitGraphPanel.NodeBrush), RelativeSource={RelativeSource Self}}" CornerRadius="11">
+                    <Border Width="18" Height="18" Margin="2" Background="{Binding Author, Converter={StaticResource AuthorToBrush}}" ToolTip="{Binding Author}" CornerRadius="9">
+                        <TextBlock Text="{Binding Author, Converter={StaticResource AuthorToLetter}}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold" />
+                    </Border>
+                </Border>
+            </DataTemplate>
+        </local:CommitLogView.NodeTemplate>
+        <local:CommitLogView.ItemTemplate>
+            <DataTemplate>
+                <Border Height="28">
+                    <TextBlock Text="{Binding Message}" VerticalAlignment="Center" FontWeight="SemiBold" Margin="6,0" />
+                </Border>
+            </DataTemplate>
+        </local:CommitLogView.ItemTemplate>
+    </local:CommitLogView>
+</Window>
