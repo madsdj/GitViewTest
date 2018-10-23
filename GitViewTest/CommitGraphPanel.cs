@@ -84,19 +84,19 @@ namespace GitViewTest
             return new Size((maxX + 1) * NodeSize.Height, Children.Count * NodeSize.Height);
         }
 
+        // TODO: Use dependency property for this.
+        private readonly Brush[] _brushes = new Brush[]
+        {
+            new SolidColorBrush(Color.FromRgb(21,160,191)),
+            new SolidColorBrush(Color.FromRgb(6,105,247)),
+            new SolidColorBrush(Color.FromRgb(142,0,194)),
+            new SolidColorBrush(Color.FromRgb(197,23,182)),
+            new SolidColorBrush(Color.FromRgb(217,1,113)),
+            new SolidColorBrush(Color.FromRgb(205,1,1))
+        };
+
         protected override Size ArrangeOverride(Size finalSize)
         {
-            // TODO: Use dependency property for this.
-            Brush[] brushes = new Brush[]
-            {
-                new SolidColorBrush(Color.FromRgb(21,160,191)),
-                new SolidColorBrush(Color.FromRgb(6,105,247)),
-                new SolidColorBrush(Color.FromRgb(142,0,194)),
-                new SolidColorBrush(Color.FromRgb(197,23,182)),
-                new SolidColorBrush(Color.FromRgb(217,1,113)),
-                new SolidColorBrush(Color.FromRgb(205,1,1))
-            };
-
             var graphBuilder = new GraphBuilder();
 
             foreach (UIElement child in Children)
@@ -105,7 +105,7 @@ namespace GitViewTest
 
                 Point location = new Point(node.X * NodeSize.Width, node.Y * NodeSize.Height);
 
-                SetNodeBrush(child, brushes[node.X]);
+                SetNodeBrush(child, _brushes[node.X]);
 
                 child.Arrange(new Rect(location, NodeSize));
             }
@@ -133,7 +133,7 @@ namespace GitViewTest
 
                     Point b = new Point(childNode.X * nodeSize.X, childNode.Y * nodeSize.Y) + halfSize;
 
-                    Pen pen = new Pen(GetNodeBrush(childNode.Element), 2);
+                    Pen pen = new Pen(_brushes[childNode.X], 2);
 
                     if (a.X == b.X)
                     {
@@ -141,7 +141,7 @@ namespace GitViewTest
                     }
                     else if (childNode.IsMerge && !reference.IsFirst)
                     {
-                        pen = new Pen(GetNodeBrush(child), 2);
+                        pen = new Pen(_brushes[node.X], 2);
                         DrawReference(dc, pen, b, a);
                     }
                     else
