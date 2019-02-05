@@ -19,12 +19,12 @@ namespace GitViewTest
         public static readonly DependencyProperty IdProperty = DependencyProperty.RegisterAttached(
             "Id",
             typeof(object),
-            typeof(CommitGraphPanel));
+            typeof(CommitGraphPanel), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public static readonly DependencyProperty ParentIdsProperty = DependencyProperty.RegisterAttached(
             "ParentIds",
             typeof(IEnumerable),
-            typeof(CommitGraphPanel));
+            typeof(CommitGraphPanel), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public static readonly DependencyProperty NodeBrushProperty = DependencyProperty.RegisterAttached(
             "NodeBrush",
@@ -81,7 +81,7 @@ namespace GitViewTest
                 child.Measure(availableSize);
             }
 
-            return new Size((maxX + 1) * NodeSize.Height, Children.Count * NodeSize.Height);
+            return new Size((maxX + 1) * NodeSize.Width, Children.Count * NodeSize.Height);
         }
 
         // TODO: Use dependency property for this.
@@ -97,6 +97,8 @@ namespace GitViewTest
 
         protected override Size ArrangeOverride(Size finalSize)
         {
+            InvalidateVisual();
+
             var graphBuilder = new GraphBuilder();
 
             foreach (UIElement child in Children)
@@ -105,12 +107,12 @@ namespace GitViewTest
 
                 Point location = new Point(node.X * NodeSize.Width, node.Y * NodeSize.Height);
 
-                SetNodeBrush(child, _brushes[node.X]);
+                SetNodeBrush(child, _brushes[node.X % _brushes.Length]);
 
                 child.Arrange(new Rect(location, NodeSize));
             }
 
-            return base.ArrangeOverride(finalSize);
+            return finalSize;
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -127,9 +129,8 @@ namespace GitViewTest
 
                 Point a = new Point(node.X * nodeSize.X, node.Y * nodeSize.Y) + halfSize;
 
-                for (int i = 0; i < node.Children.Length; i++)
+                foreach (var reference in node.Children)
                 {
-                    var reference = node.Children[i];
                     var childNode = reference.Node;
 
                     Point b = new Point(childNode.X * nodeSize.X, childNode.Y * nodeSize.Y) + halfSize;
